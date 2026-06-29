@@ -11,3 +11,17 @@ h2,
 h3 {
   font-family: var(--font-cormorant), Georgia, serif;
 }
+
+@keyframes ara-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-3deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(3deg);
+  }
+}
+
+.animate-ara-float {
+  animation: ara-float 3.2s ease-in-out infinite;
+}

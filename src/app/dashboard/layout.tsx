@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth/session";
+import { sql } from "@/lib/db";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import LanguageToggle from "@/components/LanguageToggle";
 import Logo from "@/components/Logo";
+import AraWidget from "@/components/AraWidget";
 
 export default async function DashboardLayout({
   children,
@@ -16,6 +18,11 @@ export default async function DashboardLayout({
 
   const locale = await getLocale();
   const t = getDictionary(locale);
+
+  const [user] = await sql`
+    select role, subscription_status from users where id = ${session.userId}
+  `;
+  const isActive = user?.role === "admin" || user?.subscription_status === "active";
 
   return (
     <div className="min-h-screen bg-terra-sand">
@@ -44,6 +51,7 @@ export default async function DashboardLayout({
         </nav>
       </header>
       <main className="px-6 py-8 md:px-12">{children}</main>
+      {isActive && <AraWidget locale={locale} />}
     </div>
   );
 }

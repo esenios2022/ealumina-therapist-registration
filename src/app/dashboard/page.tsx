@@ -1,7 +1,6 @@
 import { getSession } from "@/lib/auth/session";
 import { sql } from "@/lib/db";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import IntakeChat from "@/components/IntakeChat";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 
@@ -31,5 +30,10 @@ export default async function DashboardPage() {
     );
   }
 
-  return <IntakeChat locale={locale} />;
+  return (
+    <div className="mx-auto max-w-md py-24 text-center">
+      <h1 className="text-2xl font-bold text-terra-dark">{t.dashboard.welcomeTitle}</h1>
+      <p className="mt-3 text-terra-dark/70">{t.dashboard.welcomeText}</p>
+    </div>
+  );
 }
