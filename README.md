@@ -5,7 +5,7 @@ suscripción mensual. Antes de entrar a la biblioteca, un agente de IA conversa
 brevemente con cada persona para entender qué la trae.
 
 Stack: Next.js (App Router) + Neon (Postgres) + login propio (cookies firmadas) +
-Cloudflare R2 (audios privados) + Vimeo (video privado) + Claude (agente de
+Vercel Blob (audios privados) + Vimeo (video privado) + Claude (agente de
 intake) + Stripe y Mercado Pago (suscripciones). Pensado para desplegar en
 Vercel.
 
@@ -31,8 +31,8 @@ Copiá `.env.example` a `.env.local` y completá:
 
 - `DATABASE_URL` → connection string de Neon.
 - `SESSION_SECRET` → una cadena larga y aleatoria (ej: `openssl rand -hex 32`).
-- `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET_NAME`
-  → de tu cuenta de Cloudflare (ver paso 4).
+- `BLOB_READ_WRITE_TOKEN` → se genera solo al conectar un Vercel Blob store al
+  proyecto (ver paso 4); `vercel env pull` lo trae a tu `.env.local`.
 - `ANTHROPIC_API_KEY` → para el agente de intake conversacional.
 - `VIMEO_ACCESS_TOKEN` → de tu cuenta Vimeo Pro/Business.
 - `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`,
@@ -52,18 +52,16 @@ Importante: no existe protección 100% infalible contra grabación de pantalla.
 Esta configuración evita la descarga y el reuso del link fuera del dominio, que
 es lo que cubre la gran mayoría de los casos.
 
-### 4. Audios (Cloudflare R2)
+### 4. Audios (Vercel Blob)
 
-1. Creá una cuenta gratis en [cloudflare.com](https://cloudflare.com).
-2. En el dashboard, entrá a **R2 Object Storage** → "Create bucket" (nombre
-   libre, ej: `terra-araras-audio`). El free tier incluye 10 GB de
-   almacenamiento sin costo de salida.
-3. En **R2 → Manage API tokens**, creá un token con permiso de
-   lectura/escritura sobre ese bucket. Te da `Account ID`, `Access Key ID` y
-   `Secret Access Key`.
-4. Los audios se suben directo desde `/admin/content/new` (tipo "Audio") y se
-   reproducen con una URL firmada que vence en 60 segundos, generada en cada
-   reproducción.
+1. `vercel blob create-store <nombre> --access private --yes` (ya hecho para
+   este proyecto: store `terra-araras-audio`, vinculado automáticamente).
+2. Esto agrega `BLOB_READ_WRITE_TOKEN` a las variables de entorno del proyecto
+   en Vercel y a tu `.env.local` local.
+3. Los audios se suben directo desde `/admin/content/new` (tipo "Audio") y se
+   reproducen vía `/api/media/audio`, que transmite el archivo solo si la
+   sesión tiene una suscripción activa (el archivo en sí nunca queda expuesto
+   con una URL pública).
 
 ### 5. Pagos
 

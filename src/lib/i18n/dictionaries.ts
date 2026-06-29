@@ -129,10 +129,6 @@ export const dictionaries = {
       empty: "Todavía no hay testimonios publicados.",
       fallbackName: "Usuario",
     },
-    audioPlayer: {
-      loading: "Cargando audio...",
-      loadError: "No se pudo cargar el audio. Probá de nuevo.",
-    },
     whatsapp: {
       button: "Consultar por WhatsApp",
       message: "Hola! Quiero suscribirme a Terra Araras, ¿cómo hago el pago?",
@@ -265,10 +261,6 @@ export const dictionaries = {
       subtitle: "O que dizem quem já usa a Terra Araras.",
       empty: "Ainda não há depoimentos publicados.",
       fallbackName: "Usuário",
-    },
-    audioPlayer: {
-      loading: "Carregando áudio...",
-      loadError: "Não foi possível carregar o áudio. Tente de novo.",
     },
     whatsapp: {
       button: "Consultar pelo WhatsApp",

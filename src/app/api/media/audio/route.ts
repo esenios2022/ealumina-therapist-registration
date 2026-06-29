@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@/lib/auth/session";
 import { sql } from "@/lib/db";
-import { getSignedAudioUrl } from "@/lib/storage/r2";
+import { getAudioStream, resolveAudioContentType } from "@/lib/blob";
 
 export async function GET(request: NextRequest) {
   const contentId = request.nextUrl.searchParams.get("contentId");
@@ -29,10 +29,16 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "No encontrado" }, { status: 404 });
   }
 
-  try {
-    const url = await getSignedAudioUrl(content.audio_path, 60);
-    return NextResponse.json({ url });
-  } catch {
-    return NextResponse.json({ error: "No se pudo generar el link" }, { status: 500 });
+  const result = await getAudioStream(content.audio_path);
+  if (!result || result.statusCode !== 200) {
+    return NextResponse.json({ error: "No se pudo cargar el audio" }, { status: 404 });
   }
+
+  return new NextResponse(result.stream, {
+    headers: {
+      "Content-Type": resolveAudioContentType(content.audio_path, result.blob.contentType),
+      "Cache-Control": "private, no-store",
+      "Content-Disposition": "inline",
+    },
+  });
 }

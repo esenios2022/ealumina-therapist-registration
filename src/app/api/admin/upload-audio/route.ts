@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/auth/session";
-import { uploadAudioFile } from "@/lib/storage/r2";
+import { uploadAudioFile, resolveAudioContentType } from "@/lib/blob";
 
 export async function POST(request: Request) {
   const admin = await requireAdmin();
@@ -13,10 +13,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Falta el archivo" }, { status: 400 });
   }
 
-  const key = `${Date.now()}-${file.name}`;
+  const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+  const key = `${Date.now()}-${safeName}`;
   const buffer = Buffer.from(await file.arrayBuffer());
 
-  await uploadAudioFile(key, buffer, file.type || "audio/mpeg");
+  await uploadAudioFile(key, buffer, resolveAudioContentType(file.name, file.type));
 
   return NextResponse.json({ path: key });
 }
