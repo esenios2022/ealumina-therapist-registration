@@ -1,4 +1,5 @@
 import Link from "next/link";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 const CARACTERISTICAS = [
   {
@@ -111,22 +112,21 @@ export default function LandingPage() {
             <h3 className="text-lg font-semibold">Uruguay</h3>
             <p className="mt-4 text-4xl font-bold">$555</p>
             <p className="text-terra-sand/70">pesos uruguayos / mes</p>
-            <p className="mt-3 text-xs text-terra-sand/60">Mercado Pago</p>
           </div>
           <div className="rounded-3xl bg-terra-dark p-8 text-center text-terra-sand">
             <h3 className="text-lg font-semibold">Brasil</h3>
             <p className="mt-4 text-4xl font-bold">R$44</p>
             <p className="text-terra-sand/70">reales / mes</p>
-            <p className="mt-3 text-xs text-terra-sand/60">Tarjeta (Stripe)</p>
           </div>
         </div>
-        <div className="mt-8 text-center">
+        <div className="mt-8 flex flex-col items-center gap-3">
           <Link
             href="/signup"
             className="inline-block rounded-full bg-terra-gold px-8 py-3 font-semibold text-terra-dark hover:opacity-90"
           >
-            Suscribirme
+            Crear cuenta
           </Link>
+          <WhatsAppButton />
         </div>
       </section>
 

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getSession } from "@/lib/auth/session";
 import { sql } from "@/lib/db";
 import type { ContentItem } from "@/lib/types";
-import SubscribeButtons from "@/components/SubscribeButtons";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 export const dynamic = "force-dynamic";
 
@@ -22,7 +22,12 @@ export default async function DashboardPage() {
         <p className="mt-2 text-terra-dark/70">
           Activá tu suscripción mensual para acceder a la biblioteca de meditaciones y audios.
         </p>
-        <SubscribeButtons />
+        <p className="mt-1 text-sm text-terra-dark/60">
+          $555 UYU/mes (Uruguay) · R$44/mes (Brasil)
+        </p>
+        <div className="mt-6">
+          <WhatsAppButton />
+        </div>
       </div>
     );
   }
