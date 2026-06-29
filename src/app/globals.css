@@ -25,3 +25,31 @@ h3 {
 .animate-ara-float {
   animation: ara-float 3.2s ease-in-out infinite;
 }
+
+@keyframes ara-flap-left {
+  0%,
+  100% {
+    transform: rotate(-6deg);
+  }
+  50% {
+    transform: rotate(24deg);
+  }
+}
+
+@keyframes ara-flap-right {
+  0%,
+  100% {
+    transform: rotate(6deg);
+  }
+  50% {
+    transform: rotate(-24deg);
+  }
+}
+
+.animate-ara-flap-left {
+  animation: ara-flap-left 0.7s ease-in-out infinite;
+}
+
+.animate-ara-flap-right {
+  animation: ara-flap-right 0.7s ease-in-out infinite;
+}

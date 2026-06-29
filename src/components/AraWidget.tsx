@@ -1,17 +1,17 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { IntakeMessage } from "@/lib/types";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import type { Locale } from "@/lib/i18n/config";
+import AraFlyer from "@/components/AraFlyer";
 
 function randomSpot() {
   return {
     top: 8 + Math.random() * 68, // vh, keeps clear of footer
-    left: 5 + Math.random() * 78, // vw, keeps clear of right edge
+    left: 2 + Math.random() * 24, // vw — solo el lado izquierdo, lejos de los dialogos
   };
 }
 
@@ -96,9 +96,8 @@ export default function AraWidget({ locale }: { locale: Locale }) {
 
           {view === "menu" ? (
             <div className="flex flex-1 flex-col items-center overflow-y-auto px-5 pb-5">
-              <div className="relative mt-2 h-40 w-40 overflow-hidden rounded-full border-2 border-terra/40">
-                <Image src="/ara.png" alt="Ara" fill className="object-cover" />
-              </div>
+              <AraFlyer className="mt-2 h-28 w-48 rounded-3xl border-2 border-terra/40" />
+
               <div className="mt-5 w-full space-y-2">
                 {t.intake.quickReplies.map((reply) => (
                   <button
@@ -175,13 +174,9 @@ export default function AraWidget({ locale }: { locale: Locale }) {
                 transition: "top 3.5s ease-in-out, left 3.5s ease-in-out",
               }
         }
-        className={`fixed z-50 h-16 w-16 overflow-hidden rounded-full border-2 border-terra-gold/60 bg-terra-dark shadow-lg ${
-          isOpen ? "bottom-5 right-5" : ""
-        }`}
+        className={`fixed z-50 drop-shadow-xl ${isOpen ? "bottom-5 left-5" : ""}`}
       >
-        <div className="relative h-full w-full animate-ara-float">
-          <Image src="/ara.png" alt="Ara" fill className="object-cover" />
-        </div>
+        <AraFlyer className="h-16 w-28 animate-ara-float rounded-full" />
       </button>
     </>
   );
