@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { SESSION_COOKIE_NAME, verifySessionToken } from "@/lib/auth/jwt";
-import { LOCALE_COOKIE_NAME, type Locale } from "@/lib/i18n/config";
+import { LOCALE_COOKIE_NAME, LOCALE_HEADER_NAME, type Locale } from "@/lib/i18n/config";
 
 const PROTECTED_PREFIXES = ["/dashboard", "/admin"];
 const ADMIN_PREFIX = "/admin";
@@ -13,6 +13,17 @@ function detectLocale(request: NextRequest): Locale {
   return acceptLanguage.toLowerCase().startsWith("pt") ? "pt" : "es";
 }
 
+function nextWithLocale(request: NextRequest, locale: Locale, hadLocaleCookie: boolean) {
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set(LOCALE_HEADER_NAME, locale);
+
+  const response = NextResponse.next({ request: { headers: requestHeaders } });
+  if (!hadLocaleCookie) {
+    response.cookies.set(LOCALE_COOKIE_NAME, locale, { maxAge: 60 * 60 * 24 * 365 });
+  }
+  return response;
+}
+
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
   const hadLocaleCookie = Boolean(request.cookies.get(LOCALE_COOKIE_NAME)?.value);
@@ -20,11 +31,7 @@ export async function middleware(request: NextRequest) {
 
   const isProtected = PROTECTED_PREFIXES.some((p) => path.startsWith(p));
   if (!isProtected) {
-    const response = NextResponse.next();
-    if (!hadLocaleCookie) {
-      response.cookies.set(LOCALE_COOKIE_NAME, locale, { maxAge: 60 * 60 * 24 * 365 });
-    }
-    return response;
+    return nextWithLocale(request, locale, hadLocaleCookie);
   }
 
   const token = request.cookies.get(SESSION_COOKIE_NAME)?.value;
@@ -43,11 +50,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  const response = NextResponse.next();
-  if (!hadLocaleCookie) {
-    response.cookies.set(LOCALE_COOKIE_NAME, locale, { maxAge: 60 * 60 * 24 * 365 });
-  }
-  return response;
+  return nextWithLocale(request, locale, hadLocaleCookie);
 }
 
 export const config = {
