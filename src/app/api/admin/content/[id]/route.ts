@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/auth/session";
 import { sql } from "@/lib/db";
+import { extractVimeoId } from "@/lib/vimeo";
 
 export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const admin = await requireAdmin();
@@ -20,6 +21,8 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     sort_order,
   } = body;
 
+  const cleanVimeoId = vimeo_id ? extractVimeoId(vimeo_id) : null;
+
   await sql`
     update content_items set
       title = ${title},
@@ -27,7 +30,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       type = ${type},
       category = ${category},
       duration_minutes = ${duration_minutes},
-      vimeo_id = ${vimeo_id},
+      vimeo_id = ${cleanVimeoId},
       audio_path = ${audio_path},
       is_published = ${is_published},
       sort_order = ${sort_order},

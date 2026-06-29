@@ -143,7 +143,7 @@ export default function ContentForm({ initial }: { initial?: ContentItem }) {
           <input
             value={vimeoId ?? ""}
             onChange={(e) => setVimeoId(e.target.value)}
-            placeholder="Ej: 824804226"
+            placeholder="Pegá el link de Vimeo o solo el ID (ej: 824804226)"
             className="mt-1 w-full rounded-lg border border-terra/30 px-3 py-2"
           />
         </div>
