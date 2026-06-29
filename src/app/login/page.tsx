@@ -1,10 +1,12 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { getDictionary, type Dictionary } from "@/lib/i18n/dictionaries";
+import type { Locale } from "@/lib/i18n/config";
 
-function LoginForm() {
+function LoginForm({ t }: { t: Dictionary }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
@@ -27,7 +29,7 @@ function LoginForm() {
     setLoading(false);
 
     if (!res.ok) {
-      setError(data.error || "Email o contraseña incorrectos.");
+      setError(data.error || t.auth.loginError);
       return;
     }
 
@@ -41,10 +43,12 @@ function LoginForm() {
         onSubmit={handleSubmit}
         className="w-full max-w-sm rounded-2xl bg-white/70 p-8 shadow-sm"
       >
-        <h1 className="text-2xl font-bold text-terra-dark">Iniciar sesión</h1>
-        <p className="mt-1 text-sm text-terra-dark/70">Terra Araras</p>
+        <h1 className="text-2xl font-bold text-terra-dark">{t.auth.loginTitle}</h1>
+        <p className="mt-1 text-sm text-terra-dark/70">{t.auth.brand}</p>
 
-        <label className="mt-6 block text-sm font-medium text-terra-dark">Email</label>
+        <label className="mt-6 block text-sm font-medium text-terra-dark">
+          {t.auth.emailLabel}
+        </label>
         <input
           type="email"
           required
@@ -53,7 +57,9 @@ function LoginForm() {
           className="mt-1 w-full rounded-lg border border-terra/30 px-3 py-2"
         />
 
-        <label className="mt-4 block text-sm font-medium text-terra-dark">Contraseña</label>
+        <label className="mt-4 block text-sm font-medium text-terra-dark">
+          {t.auth.passwordLabel}
+        </label>
         <input
           type="password"
           required
@@ -69,13 +75,13 @@ function LoginForm() {
           disabled={loading}
           className="mt-6 w-full rounded-full bg-terra px-4 py-2 font-semibold text-terra-sand hover:bg-terra-deep disabled:opacity-60"
         >
-          {loading ? "Ingresando..." : "Ingresar"}
+          {loading ? t.auth.loginLoading : t.auth.loginButton}
         </button>
 
         <p className="mt-4 text-center text-sm text-terra-dark/70">
-          ¿No tenés cuenta?{" "}
+          {t.auth.noAccount}{" "}
           <Link href="/signup" className="font-medium underline">
-            Creá una
+            {t.auth.createOne}
           </Link>
         </p>
       </form>
@@ -84,9 +90,18 @@ function LoginForm() {
 }
 
 export default function LoginPage() {
+  const [locale, setLocale] = useState<Locale>("es");
+
+  useEffect(() => {
+    const match = document.cookie.match(/locale=(es|pt)/);
+    if (match) setLocale(match[1] as Locale);
+  }, []);
+
+  const t = getDictionary(locale);
+
   return (
     <Suspense>
-      <LoginForm />
+      <LoginForm t={t} />
     </Suspense>
   );
 }

@@ -12,6 +12,8 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
   const {
     title,
     description,
+    title_pt,
+    description_pt,
     type,
     category,
     duration_minutes,
@@ -27,6 +29,8 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     update content_items set
       title = ${title},
       description = ${description},
+      title_pt = ${title_pt},
+      description_pt = ${description_pt},
       type = ${type},
       category = ${category},
       duration_minutes = ${duration_minutes},

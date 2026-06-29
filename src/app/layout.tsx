@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Montserrat } from "next/font/google";
+import { getLocale } from "@/lib/i18n/get-locale";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -19,13 +20,14 @@ export const metadata: Metadata = {
   description: "Meditaciones y sanación energética guiadas, en video y audio.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const locale = await getLocale();
   return (
-    <html lang="es" className={`${cormorant.variable} ${montserrat.variable}`}>
+    <html lang={locale} className={`${cormorant.variable} ${montserrat.variable}`}>
       <body className="bg-terra-sand font-sans text-terra-dark antialiased">{children}</body>
     </html>
   );

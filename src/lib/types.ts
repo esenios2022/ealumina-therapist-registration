@@ -4,6 +4,8 @@ export interface ContentItem {
   id: string;
   title: string;
   description: string | null;
+  title_pt: string | null;
+  description_pt: string | null;
   type: ContentType;
   category: string;
   duration_minutes: number | null;

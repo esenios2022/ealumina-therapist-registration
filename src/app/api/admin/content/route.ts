@@ -11,6 +11,8 @@ export async function POST(request: Request) {
   const {
     title,
     description,
+    title_pt,
+    description_pt,
     type,
     category,
     duration_minutes,
@@ -24,9 +26,9 @@ export async function POST(request: Request) {
 
   const [item] = await sql`
     insert into content_items
-      (title, description, type, category, duration_minutes, vimeo_id, audio_path, is_published, sort_order, created_by)
+      (title, description, title_pt, description_pt, type, category, duration_minutes, vimeo_id, audio_path, is_published, sort_order, created_by)
     values
-      (${title}, ${description}, ${type}, ${category}, ${duration_minutes}, ${cleanVimeoId}, ${audio_path}, ${is_published}, ${sort_order}, ${admin.userId})
+      (${title}, ${description}, ${title_pt}, ${description_pt}, ${type}, ${category}, ${duration_minutes}, ${cleanVimeoId}, ${audio_path}, ${is_published}, ${sort_order}, ${admin.userId})
     returning id
   `;
 

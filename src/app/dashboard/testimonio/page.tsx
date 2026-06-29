@@ -1,10 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import type { Locale } from "@/lib/i18n/config";
 
 export default function TestimonioPage() {
+  const [locale, setLocale] = useState<Locale>("es");
   const [content, setContent] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "saved" | "error">("idle");
+
+  useEffect(() => {
+    const match = document.cookie.match(/locale=(es|pt)/);
+    if (match) setLocale(match[1] as Locale);
+  }, []);
+
+  const t = getDictionary(locale);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -21,11 +31,8 @@ export default function TestimonioPage() {
 
   return (
     <div className="mx-auto max-w-xl">
-      <h1 className="text-xl font-bold text-terra-dark">Dejá tu testimonio</h1>
-      <p className="mt-2 text-sm text-terra-dark/70">
-        Contá tu experiencia con Terra Araras. Lo revisamos antes de publicarlo en la página
-        pública de testimonios.
-      </p>
+      <h1 className="text-xl font-bold text-terra-dark">{t.testimonialForm.title}</h1>
+      <p className="mt-2 text-sm text-terra-dark/70">{t.testimonialForm.subtitle}</p>
 
       <form onSubmit={handleSubmit} className="mt-6 rounded-2xl bg-white/70 p-6">
         <textarea
@@ -34,17 +41,15 @@ export default function TestimonioPage() {
           value={content}
           onChange={(e) => setContent(e.target.value)}
           rows={5}
-          placeholder="Escribí tu testimonio..."
+          placeholder={t.testimonialForm.placeholder}
           className="w-full rounded-lg border border-terra/30 px-3 py-2"
         />
 
         {status === "saved" && (
-          <p className="mt-3 text-sm text-green-700">
-            ¡Gracias! Tu testimonio quedó pendiente de aprobación.
-          </p>
+          <p className="mt-3 text-sm text-green-700">{t.testimonialForm.saved}</p>
         )}
         {status === "error" && (
-          <p className="mt-3 text-sm text-red-700">No se pudo guardar, probá de nuevo.</p>
+          <p className="mt-3 text-sm text-red-700">{t.testimonialForm.error}</p>
         )}
 
         <button
@@ -52,7 +57,7 @@ export default function TestimonioPage() {
           disabled={status === "loading"}
           className="mt-4 rounded-full bg-terra px-6 py-2 font-semibold text-terra-sand disabled:opacity-60"
         >
-          {status === "loading" ? "Enviando..." : "Enviar testimonio"}
+          {status === "loading" ? t.testimonialForm.sending : t.testimonialForm.submit}
         </button>
       </form>
     </div>

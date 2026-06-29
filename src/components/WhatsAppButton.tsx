@@ -1,8 +1,17 @@
-const PHONE = "59893422022";
-const MENSAJE = "Hola! Quiero suscribirme a Terra Araras, ¿cómo hago el pago?";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import type { Locale } from "@/lib/i18n/config";
 
-export default function WhatsAppButton({ className }: { className?: string }) {
-  const href = `https://wa.me/${PHONE}?text=${encodeURIComponent(MENSAJE)}`;
+const PHONE = "59893422022";
+
+export default function WhatsAppButton({
+  locale,
+  className,
+}: {
+  locale: Locale;
+  className?: string;
+}) {
+  const t = getDictionary(locale);
+  const href = `https://wa.me/${PHONE}?text=${encodeURIComponent(t.whatsapp.message)}`;
 
   return (
     <a
@@ -14,7 +23,7 @@ export default function WhatsAppButton({ className }: { className?: string }) {
         "inline-block rounded-full bg-green-600 px-6 py-2 font-semibold text-white hover:bg-green-700"
       }
     >
-      Consultar por WhatsApp
+      {t.whatsapp.button}
     </a>
   );
 }

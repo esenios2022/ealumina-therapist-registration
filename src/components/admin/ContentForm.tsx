@@ -8,6 +8,8 @@ export default function ContentForm({ initial }: { initial?: ContentItem }) {
   const router = useRouter();
   const [title, setTitle] = useState(initial?.title ?? "");
   const [description, setDescription] = useState(initial?.description ?? "");
+  const [titlePt, setTitlePt] = useState(initial?.title_pt ?? "");
+  const [descriptionPt, setDescriptionPt] = useState(initial?.description_pt ?? "");
   const [type, setType] = useState<ContentType>(initial?.type ?? "video");
   const [category, setCategory] = useState(initial?.category ?? "meditacion");
   const [durationMinutes, setDurationMinutes] = useState(
@@ -43,6 +45,8 @@ export default function ContentForm({ initial }: { initial?: ContentItem }) {
       const payload = {
         title,
         description: description || null,
+        title_pt: titlePt || null,
+        description_pt: descriptionPt || null,
         type,
         category,
         duration_minutes: durationMinutes ? Number(durationMinutes) : null,
@@ -88,6 +92,30 @@ export default function ContentForm({ initial }: { initial?: ContentItem }) {
           onChange={(e) => setDescription(e.target.value)}
           className="mt-1 w-full rounded-lg border border-terra/30 px-3 py-2"
         />
+      </div>
+
+      <div className="rounded-lg border border-terra-gold/40 bg-terra-gold/5 p-3">
+        <p className="text-xs font-semibold uppercase tracking-wide text-terra-gold">
+          Versión en portugués (Brasil)
+        </p>
+        <div className="mt-2">
+          <label className="block text-sm font-medium text-terra-dark">Título (PT)</label>
+          <input
+            value={titlePt ?? ""}
+            onChange={(e) => setTitlePt(e.target.value)}
+            placeholder="Si lo dejás vacío, se usa el título en español"
+            className="mt-1 w-full rounded-lg border border-terra/30 px-3 py-2"
+          />
+        </div>
+        <div className="mt-2">
+          <label className="block text-sm font-medium text-terra-dark">Descripción (PT)</label>
+          <textarea
+            value={descriptionPt ?? ""}
+            onChange={(e) => setDescriptionPt(e.target.value)}
+            placeholder="Si la dejás vacía, se usa la descripción en español"
+            className="mt-1 w-full rounded-lg border border-terra/30 px-3 py-2"
+          />
+        </div>
       </div>
 
       <div className="flex gap-4">

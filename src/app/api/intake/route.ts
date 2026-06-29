@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@/lib/auth/session";
 import { sql } from "@/lib/db";
-import { getAnthropic, INTAKE_MODEL, INTAKE_SYSTEM_PROMPT } from "@/lib/anthropic";
+import { getAnthropic, INTAKE_MODEL, getIntakeSystemPrompt } from "@/lib/anthropic";
 import type { IntakeMessage } from "@/lib/types";
 
 export async function POST(request: NextRequest) {
-  const { sessionId, message } = await request.json();
+  const { sessionId, message, locale } = await request.json();
 
   if (!message || typeof message !== "string") {
     return NextResponse.json({ error: "Falta el mensaje" }, { status: 400 });
@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
   const completion = await getAnthropic().messages.create({
     model: INTAKE_MODEL,
     max_tokens: 400,
-    system: INTAKE_SYSTEM_PROMPT,
+    system: getIntakeSystemPrompt(locale === "pt" ? "pt" : "es"),
     messages: updatedHistory.map((m) => ({ role: m.role, content: m.content })),
   });
 

@@ -18,6 +18,8 @@ create table content_items (
   id uuid primary key default gen_random_uuid(),
   title text not null,
   description text,
+  title_pt text,
+  description_pt text,
   type text not null check (type in ('video', 'audio')),
   category text not null default 'meditacion',
   duration_minutes int,
