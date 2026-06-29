@@ -4,6 +4,7 @@ import { getSession } from "@/lib/auth/session";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import LanguageToggle from "@/components/LanguageToggle";
+import Logo from "@/components/Logo";
 
 export default async function DashboardLayout({
   children,
@@ -19,8 +20,8 @@ export default async function DashboardLayout({
   return (
     <div className="min-h-screen bg-terra-sand">
       <header className="flex items-center justify-between border-b border-terra/10 px-6 py-4 md:px-12">
-        <Link href="/dashboard" className="font-serif text-2xl font-semibold tracking-wide text-terra-dark md:text-3xl">
-          Terra Araras
+        <Link href="/dashboard">
+          <Logo className="text-terra-dark" />
         </Link>
         <nav className="flex items-center gap-4 text-sm">
           <Link href="/dashboard" className="hover:underline">

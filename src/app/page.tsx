@@ -1,6 +1,7 @@
 import Link from "next/link";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import LanguageToggle from "@/components/LanguageToggle";
+import Logo from "@/components/Logo";
 import { getLocale } from "@/lib/i18n/get-locale";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 
@@ -13,9 +14,7 @@ export default async function LandingPage() {
   return (
     <main>
       <header className="flex items-center justify-between px-6 py-6 md:px-16">
-        <span className="font-serif text-2xl font-semibold tracking-wide md:text-3xl">
-          Terra Araras
-        </span>
+        <Logo />
         <nav className="flex items-center gap-4">
           <Link href="/testimonios" className="px-2 text-sm font-medium hover:underline">
             {t.nav.testimonios}
