@@ -23,6 +23,9 @@ export default async function DashboardLayout({
           <Link href="/dashboard/intake" className="hover:underline">
             Hablar con el agente
           </Link>
+          <Link href="/dashboard/testimonio" className="hover:underline">
+            Dejar testimonio
+          </Link>
           {session.role === "admin" && (
             <Link href="/admin" className="hover:underline">
               Admin

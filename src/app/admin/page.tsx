@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { sql } from "@/lib/db";
-import type { ContentItem, User } from "@/lib/types";
+import type { ContentItem, Testimonial, User } from "@/lib/types";
 import DeleteContentButton from "@/components/admin/DeleteContentButton";
+import TestimonialActions from "@/components/admin/TestimonialActions";
 
 export const dynamic = "force-dynamic";
 
@@ -13,6 +14,13 @@ export default async function AdminPage() {
   const subscribers = (await sql`
     select * from users order by created_at desc
   `) as User[];
+
+  const testimonials = (await sql`
+    select t.*, u.full_name, u.email
+    from testimonials t
+    join users u on u.id = t.user_id
+    order by t.is_approved asc, t.created_at desc
+  `) as (Testimonial & { email: string })[];
 
   const activeCount = subscribers.filter((s) => s.subscription_status === "active").length;
 
@@ -97,6 +105,30 @@ export default async function AdminPage() {
               ))}
             </tbody>
           </table>
+        </div>
+      </section>
+      <section>
+        <h2 className="text-xl font-bold text-terra-dark">
+          Testimonios ({testimonials.filter((t) => !t.is_approved).length} pendientes)
+        </h2>
+        <div className="mt-4 space-y-3">
+          {testimonials.map((t) => (
+            <div key={t.id} className="rounded-2xl bg-white/70 p-4">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-sm text-terra-dark/80">"{t.content}"</p>
+                  <p className="mt-2 text-xs text-terra-dark/50">
+                    {t.full_name ?? t.email} ·{" "}
+                    {t.is_approved ? "publicado" : "pendiente de aprobación"}
+                  </p>
+                </div>
+                <TestimonialActions id={t.id} isApproved={t.is_approved} />
+              </div>
+            </div>
+          ))}
+          {testimonials.length === 0 && (
+            <p className="text-sm text-terra-dark/60">Todavía no hay testimonios.</p>
+          )}
         </div>
       </section>
     </div>

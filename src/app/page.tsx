@@ -1,5 +1,32 @@
 import Link from "next/link";
 
+const CARACTERISTICAS = [
+  {
+    title: "Meditaciones de 5 a 20 minutos",
+    text: "Sesiones cortas para el día a día y procesos más largos cuando necesites algo más profundo.",
+  },
+  {
+    title: "Comandos cuánticos",
+    text: "Trabajo específico para la parte emocional: ansiedad, bloqueos, sostén en momentos difíciles.",
+  },
+  {
+    title: "Limpieza energética",
+    text: "Pensado especialmente para terapeutas: soltar lo que se absorbe en el consultorio entre sesión y sesión.",
+  },
+  {
+    title: "Video o audio, como prefieras",
+    text: "Mismo contenido en dos formatos — mirá el video o simplemente escuchá el audio.",
+  },
+  {
+    title: "Un agente te recibe primero",
+    text: "Antes de entrar a la biblioteca, una breve conversación para entender qué te trae hoy y guiarte a lo que necesitás en ese momento.",
+  },
+  {
+    title: "Contenido protegido",
+    text: "Los videos y audios no se pueden descargar ni compartir el link — es para tu uso personal dentro de la plataforma.",
+  },
+];
+
 const BENEFICIOS = [
   {
     title: "Para terapeutas",
@@ -20,7 +47,10 @@ export default function LandingPage() {
     <main>
       <header className="flex items-center justify-between px-6 py-6 md:px-16">
         <span className="text-xl font-semibold tracking-wide">Terra Araras</span>
-        <nav className="flex gap-4">
+        <nav className="flex items-center gap-4">
+          <Link href="/testimonios" className="px-2 text-sm font-medium hover:underline">
+            Testimonios
+          </Link>
           <Link href="/login" className="px-4 py-2 text-sm font-medium hover:underline">
             Iniciar sesión
           </Link>
@@ -50,6 +80,18 @@ export default function LandingPage() {
         </Link>
       </section>
 
+      <section className="px-6 py-12 md:px-16">
+        <h2 className="text-center text-2xl font-bold text-terra-dark">¿Qué vas a encontrar?</h2>
+        <div className="mt-8 grid gap-6 md:grid-cols-3">
+          {CARACTERISTICAS.map((c) => (
+            <div key={c.title} className="rounded-2xl bg-white/60 p-6 shadow-sm">
+              <h3 className="text-lg font-semibold">{c.title}</h3>
+              <p className="mt-2 text-sm text-terra-dark/80">{c.text}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
       <section className="grid gap-6 px-6 py-12 md:grid-cols-3 md:px-16">
         {BENEFICIOS.map((b) => (
           <div key={b.title} className="rounded-2xl bg-white/60 p-6 shadow-sm">
@@ -60,27 +102,39 @@ export default function LandingPage() {
       </section>
 
       <section className="px-6 py-16 md:px-16" id="precios">
-        <div className="mx-auto max-w-md rounded-3xl bg-terra-dark p-8 text-terra-sand text-center">
-          <h2 className="text-2xl font-bold">Suscripción mensual</h2>
-          <p className="mt-2 text-terra-sand/80">
-            Acceso completo a la biblioteca de meditaciones y audios, sin límite de
-            reproducciones.
-          </p>
-          <p className="mt-6 text-4xl font-bold">$ ---/mes</p>
+        <h2 className="text-center text-2xl font-bold text-terra-dark">Suscripción mensual</h2>
+        <p className="mx-auto mt-2 max-w-md text-center text-terra-dark/70">
+          Acceso completo a la biblioteca de meditaciones y audios, sin límite de reproducciones.
+        </p>
+        <div className="mx-auto mt-8 grid max-w-2xl gap-6 md:grid-cols-2">
+          <div className="rounded-3xl bg-terra-dark p-8 text-center text-terra-sand">
+            <h3 className="text-lg font-semibold">Uruguay</h3>
+            <p className="mt-4 text-4xl font-bold">$555</p>
+            <p className="text-terra-sand/70">pesos uruguayos / mes</p>
+            <p className="mt-3 text-xs text-terra-sand/60">Mercado Pago</p>
+          </div>
+          <div className="rounded-3xl bg-terra-dark p-8 text-center text-terra-sand">
+            <h3 className="text-lg font-semibold">Brasil</h3>
+            <p className="mt-4 text-4xl font-bold">R$44</p>
+            <p className="text-terra-sand/70">reales / mes</p>
+            <p className="mt-3 text-xs text-terra-sand/60">Tarjeta (Stripe)</p>
+          </div>
+        </div>
+        <div className="mt-8 text-center">
           <Link
             href="/signup"
-            className="mt-6 inline-block w-full rounded-full bg-terra-gold px-6 py-3 font-semibold text-terra-dark hover:opacity-90"
+            className="inline-block rounded-full bg-terra-gold px-8 py-3 font-semibold text-terra-dark hover:opacity-90"
           >
             Suscribirme
           </Link>
-          <p className="mt-3 text-xs text-terra-sand/60">
-            Pagá con tarjeta (Mercado Pago) o Stripe internacional.
-          </p>
         </div>
       </section>
 
-      <footer className="px-6 py-8 text-center text-sm text-terra-dark/60 md:px-16">
-        © {new Date().getFullYear()} Terra Araras
+      <footer className="flex flex-col items-center gap-2 px-6 py-8 text-center text-sm text-terra-dark/60 md:px-16">
+        <Link href="/testimonios" className="hover:underline">
+          Ver testimonios
+        </Link>
+        <span>© {new Date().getFullYear()} Terra Araras</span>
       </footer>
     </main>
   );

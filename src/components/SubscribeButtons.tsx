@@ -20,14 +20,14 @@ export default function SubscribeButtons() {
         disabled={loading !== null}
         className="rounded-full bg-terra-gold px-6 py-2 font-semibold text-terra-dark disabled:opacity-60"
       >
-        {loading === "mercadopago" ? "Redirigiendo..." : "Pagar con Mercado Pago"}
+        {loading === "mercadopago" ? "Redirigiendo..." : "Uruguay — $555 UYU/mes (Mercado Pago)"}
       </button>
       <button
         onClick={() => startCheckout("stripe")}
         disabled={loading !== null}
         className="rounded-full bg-terra px-6 py-2 font-semibold text-terra-sand disabled:opacity-60"
       >
-        {loading === "stripe" ? "Redirigiendo..." : "Pagar con Stripe"}
+        {loading === "stripe" ? "Redirigiendo..." : "Brasil — R$44/mes (tarjeta)"}
       </button>
     </div>
   );

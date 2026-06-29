@@ -28,3 +28,12 @@ export interface IntakeMessage {
   role: "user" | "assistant";
   content: string;
 }
+
+export interface Testimonial {
+  id: string;
+  user_id: string;
+  content: string;
+  is_approved: boolean;
+  created_at: string;
+  full_name?: string | null;
+}

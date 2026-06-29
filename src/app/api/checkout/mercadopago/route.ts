@@ -19,7 +19,7 @@ export async function POST() {
         frequency: 1,
         frequency_type: "months",
         transaction_amount: Number(process.env.MERCADOPAGO_MONTHLY_AMOUNT ?? "0"),
-        currency_id: "ARS",
+        currency_id: "UYU",
       },
     },
   });

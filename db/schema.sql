@@ -53,8 +53,18 @@ create table subscriptions (
   updated_at timestamptz not null default now()
 );
 
+create table testimonials (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references users (id) on delete cascade,
+  content text not null,
+  is_approved boolean not null default false,
+  created_at timestamptz not null default now()
+);
+
 create unique index subscriptions_provider_subscription_id_key
   on subscriptions (provider_subscription_id);
 create index subscriptions_user_id_idx on subscriptions (user_id);
 create index content_items_published_idx on content_items (is_published, sort_order);
 create index intake_sessions_user_id_idx on intake_sessions (user_id);
+create index testimonials_approved_idx on testimonials (is_approved, created_at);
+create index testimonials_user_id_idx on testimonials (user_id);
