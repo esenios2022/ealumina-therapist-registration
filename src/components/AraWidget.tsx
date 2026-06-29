@@ -8,6 +8,13 @@ import type { IntakeMessage } from "@/lib/types";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import type { Locale } from "@/lib/i18n/config";
 
+function randomSpot() {
+  return {
+    top: 8 + Math.random() * 68, // vh, keeps clear of footer
+    left: 5 + Math.random() * 78, // vw, keeps clear of right edge
+  };
+}
+
 export default function AraWidget({ locale }: { locale: Locale }) {
   const t = getDictionary(locale);
   const pathname = usePathname();
@@ -20,10 +27,17 @@ export default function AraWidget({ locale }: { locale: Locale }) {
   const [sessionId, setSessionId] = useState<string | undefined>();
   const [loading, setLoading] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const [pos, setPos] = useState(() => randomSpot());
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  useEffect(() => {
+    if (isOpen) return;
+    const interval = setInterval(() => setPos(randomSpot()), 7000);
+    return () => clearInterval(interval);
+  }, [isOpen]);
 
   async function send(text: string) {
     if (!text.trim() || loading) return;
@@ -152,7 +166,18 @@ export default function AraWidget({ locale }: { locale: Locale }) {
       <button
         onClick={() => setIsOpen((v) => !v)}
         aria-label="Ara"
-        className="fixed bottom-5 right-5 z-50 h-16 w-16 overflow-hidden rounded-full border-2 border-terra-gold/60 bg-terra-dark shadow-lg"
+        style={
+          isOpen
+            ? undefined
+            : {
+                top: `${pos.top}vh`,
+                left: `${pos.left}vw`,
+                transition: "top 3.5s ease-in-out, left 3.5s ease-in-out",
+              }
+        }
+        className={`fixed z-50 h-16 w-16 overflow-hidden rounded-full border-2 border-terra-gold/60 bg-terra-dark shadow-lg ${
+          isOpen ? "bottom-5 right-5" : ""
+        }`}
       >
         <div className="relative h-full w-full animate-ara-float">
           <Image src="/ara.png" alt="Ara" fill className="object-cover" />
